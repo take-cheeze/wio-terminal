@@ -8,25 +8,31 @@ on:
 
 jobs:
   build:
+    env:
+      CLI_VERSION: 0.11.0 
+      ADDITIONAL_URL: https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json
+      SEEEDUIONO_VERSION: 1.7.9
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
+    - name: Cache arduino-cli
+      id: cache-arduino-cli
+      uses: actions/cache@v2
+      with:
+        path: ~/.arduino15
+        key: arduino-cli-${{ env.CLI_VERSION }}-${{ env.SEEEDUIONO_VERSION }}
     - name: Download arduino-cli
-      env:
-        CLI_VERSION: 0.11.0 
       run: |
         wget https://downloads.arduino.cc/arduino-cli/arduino-cli_${CLI_VERSION}_Linux_64bit.tar.gz &&
         tar xf arduino-cli_${CLI_VERSION}_Linux_64bit.tar.gz &&
         sudo cp arduino-cli /usr/local/bin
     - name: Configure arduino-cli with Seeed
-      env:
-        ADDITIONAL_URL: https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json
       run: |
         arduino-cli config init --additional-urls $ADDITIONAL_URL &&
         arduino-cli core update-index &&
-        arduino-cli core download Seeeduino:samd &&
-        arduino-cli core install Seeeduino:samd
+        arduino-cli core download Seeeduino:samd@${SEEEDUIONO_VERSION} &&
+        arduino-cli core install Seeeduino:samd@${SEEEDUIONO_VERSION}
     - name: Build 5way-switch
-      run: cd 5way-switch & arduino-cli compile -b Seeeduino:samd:seeed_wio_terminal
+      run: cd 5way-switch && arduino-cli compile -b Seeeduino:samd:seeed_wio_terminal
