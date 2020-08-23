@@ -6,6 +6,8 @@ import (
 	"log"
 )
 
+// How to build: `GOOS=windows GOARCH=386 go build .`
+
 func main() {
 	ports, err := serial.GetPortsList()
 	if err != nil {
