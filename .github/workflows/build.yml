@@ -1,0 +1,32 @@
+name: Build with arduino-cli
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Download arduino-cli
+      env:
+        CLI_VERSION: 0.11.0 
+      run: |
+        wget https://downloads.arduino.cc/arduino-cli/arduino-cli_$CLI_VERSION_Linux_64bit.tar.gz &&
+        tar xf arduino-cli_$CLI_VERSION_Linux_64bit.tar.gz &&
+        cp arduino-cli_$CLI_VERSION_Linux_64bit/arduino-cli /usr/local/bin
+    - name: Configure arduino-cli with Seeed
+      env:
+        ADDITIONAL_URL: https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json
+      run: |
+        arduino-cli core init --additional-urls $ADDITIONAL_URL &&
+        arduino-cli update-index &&
+        arduino-cli download Seeeduino:samd &&
+        arduino-cli install Seeeduino:samd
+    - name: Build 5way-switch
+      run: cd 5way-switch & arduino-cli compile -b Seeeduino:samd:seeed_wio_terminal
