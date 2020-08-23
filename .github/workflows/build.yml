@@ -19,7 +19,7 @@ jobs:
       run: |
         wget https://downloads.arduino.cc/arduino-cli/arduino-cli_${CLI_VERSION}_Linux_64bit.tar.gz &&
         tar xf arduino-cli_${CLI_VERSION}_Linux_64bit.tar.gz &&
-        cp arduino-cli /usr/local/bin
+        sudo cp arduino-cli /usr/local/bin
     - name: Configure arduino-cli with Seeed
       env:
         ADDITIONAL_URL: https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json
