@@ -36,3 +36,5 @@ jobs:
         arduino-cli core install Seeeduino:samd@${SEEEDUIONO_VERSION}
     - name: Build 5way-switch
       run: cd 5way-switch && arduino-cli compile -b Seeeduino:samd:seeed_wio_terminal
+    - name: Build light-sensor
+      run: cd light-sensor && arduino-cli compile -b Seeeduino:samd:seeed_wio_terminal
