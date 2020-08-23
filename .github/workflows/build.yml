@@ -25,8 +25,8 @@ jobs:
         ADDITIONAL_URL: https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json
       run: |
         arduino-cli core init --additional-urls $ADDITIONAL_URL &&
-        arduino-cli update-index &&
-        arduino-cli download Seeeduino:samd &&
-        arduino-cli install Seeeduino:samd
+        arduino-cli core update-index &&
+        arduino-cli core download Seeeduino:samd &&
+        arduino-cli core install Seeeduino:samd
     - name: Build 5way-switch
       run: cd 5way-switch & arduino-cli compile -b Seeeduino:samd:seeed_wio_terminal
